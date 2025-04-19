@@ -272,35 +272,46 @@ void shopping::receipt() {
         cout << "________________________________________\n";
 
         do {
-            cout << "\n\nEnter product code: ";
+            cout << "\nEnter product code: ";
             cin >> arrc[c];
-            cout << "\nEnter the product quantity: ";
+            cout << "Enter the product quantity: ";
             cin >> arrq[c];
             c++;
 
-            cout << "\nDo you want to buy another product? (y/n): ";
+            cout << "Do you want to buy another product? (y/n): ";
             cin >> choice;
-        } while (choice == 'y');
+        } while (choice == 'y' || choice == 'Y');
 
-        cout << "\n\n\t\t\t____________________________________RECEIPT_________________________________________\n";
-        cout << "Product No\t\t Product Name\t\t Product Quantity\t\t Price\t\t Amount\t\t Amount with Discount \n";
+        cout << "\n\n\t\t\t_______________________________ RECEIPT _______________________________\n";
+        cout << left << setw(20) << "ProdCode"
+             << setw(20) << "Product Name"
+             << setw(20) << "Qty"
+             << setw(20) << "Price"
+             << setw(20) << "Amount"
+             << setw(20) << "After Discount" << "\n";
+        cout << "------------------------------------------------------------------------\n";
 
         for (int i = 0; i < c; i++) {
             data.clear();
             data.seekg(0);
-            while (data >>pcode>> pname>> price >> dis) {
+            while (data >> pcode >> pname >> price >> dis) {
                 if (pcode == arrc[i]) {
                     amount = price * arrq[i];
                     discount = amount - (amount * dis / 100);
                     total += discount;
-                    cout << pcode << "\t\t" << pname << "\t\t" << arrq[i] << "\t\t" << price << "\t\t" << amount << "\t\t" << discount << "\n";
+                    cout << left << setw(20) << pcode
+                         << setw(20) << pname
+                         << setw(20) << arrq[i]
+                         << setw(20) << price
+                         << setw(20) << amount
+                         << setw(20) << discount << "\n";
                 }
             }
         }
         data.close();
     }
-    cout << "\n\n_____________________________________________________________________\n";
-    cout << " Total Amount: " << total << "\n";
+    cout << "\n------------------------------------------------------------------------\n";
+    cout << right << setw(50) << "Total Amount: " << total << "\n";
 }
 
 int main() {
