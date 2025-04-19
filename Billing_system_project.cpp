@@ -110,6 +110,8 @@ void shopping::buyer() {
     }
 }
 
+ 
+
 void shopping::add() {
     fstream data;
     int token = 0;
@@ -128,13 +130,9 @@ void shopping::add() {
     cout << "\n\t Discount: ";
     cin >> dis;
 
+    // Check if product already exists
     data.open("database.txt", ios::in);
-    if (data.fail()) {
-        data.close();
-        data.open("database.txt", ios::app | ios::out);
-        data << pcode << " " << pname << " " << price << " " << dis << "\n";
-        cout << "\n\t\t Record inserted.\n";
-    } else {
+    if (data.is_open()) {
         while (data >> c >> n >> p >> d) {
             if (c == pcode) {
                 token = 1;
@@ -142,17 +140,22 @@ void shopping::add() {
             }
         }
         data.close();
+    }
 
-        if (token == 1) {
-            cout << "\n\t Product code already exists. Try again.\n";
-        } else {
-            data.open("database.txt", ios::app | ios::out);
+    if (token == 1) {
+        cout << "\n\t Product code already exists. Try again.\n";
+    } else {
+        data.open("database.txt", ios::app);
+        if (data.is_open()) {
             data << pcode << " " << pname << " " << price << " " << dis << "\n";
             cout << "\n\t\t Record inserted.\n";
+            data.close();
+        } else {
+            cout << "\n\t Error opening file for writing.\n";
         }
     }
-    data.close();
 }
+
 
 void shopping::edit() {
     fstream data, data1;
